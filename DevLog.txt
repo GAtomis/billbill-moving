@@ -1,0 +1,376 @@
+开发手册
+************第一天链接git**************
+git使用手册：
+// git仓库同步 步骤  
+// 一  git add . 提交本地代码进入缓存区 
+// 二  git commit -m 'project init' 缓存区提交到本地仓库进行项目初始化
+// 三  git push  将本机仓库代码推送至线上hub库中
+
+//git分支合并
+//一 切换分支 git checkout master
+//二 合并 git merge origin/(要合并的项目)xxxx
+//三 推送刷新 git push
+
+
+// git 分支创建
+// 一 云平台创建分支
+// 二 git pull
+// 三 git checkout 新分支名称
+// 四 git status查看现在对接分支 git branch查看所有分支
+
+github 远程创建分支
+git branch 查看当前分支
+git branch -r 查看远程分支
+git branch -a 查看所有分支
+
+链接GitHub线上仓库同步方式
+
+方法一：
+      在线上创建一个仓库，创建成功后复制clone地址,在开发目录下输入 git clone [复制的地址]
+      将使用vue create 的项目除了gitnone全部复制到该目录下，运行手册中git仓库同步，输入用户名密码远程仓库的同步
+
+方法二：
+      在线上创建一个仓库，且这个项目必须是空项目，所有可选的配置文件都选none，根据仓库提示命令，进行线上和线下本地仓库的链接，后续如上进行同步仓库
+
+****************************************************************
+第二课：划分目录结构
+src下开发目录的划分
+assets —— 放一些本地css和img
+common —— 放一些公共js代码
+components —— 公共组件
+|
+  -common ——  类似可以通用的组件
+  |
+  -content —— 只有在这个项目可以用的组件
+network ——  一些网络请求的封装
+router  ——  前端路由的划分
+store —— vuex的一些数据封账
+views ——  一些page的页面以及对应的父子组件放在这里
+
+第三课 样式初始化
+项目的CSS初始化很重要，这里推荐GitHub大神写的css reset样式
+使用base.css 引入组件中使用
+
+第四课 vue.config和editorconfig
+对应的cli3导入路径别名的配置
+module.exports = {
+  configureWebpack: {
+    resolve: {
+      alias: {
+        'assets': '@/assets',
+        'network': '@/network',
+        'common': '@/common',
+        'components': '@/components',
+        'views': '@/views'
+
+      }
+    }
+  }
+}
+
+第三节课划分tabbar
+  首先我们项目开发的时候首先可以将我们的导航做好
+  具体可以参考之前做的tabbar的开发
+
+第四节课 nav的开发  在git上创建分支 nav-start
+  操作创建了公共组件navBar components/common/navBar.vue
+  在home界面进行组件加载，运行环境调试
+  完成后同步仓库 分支名nav-start
+
+第五节课 
+网络后台数据连接
+这里是用了我们提前准备好的public-tools  ./network的路径下单axiosmain.js组件。
+各个组件功能介绍：
+  axiosmain------作为一个核心组件axios框架引用的功能封装，例如拦截器和baseUrl和响应时
+  间的设置，最后导出接口供组件或者面向其他对象使用
+  home(面对页面名字).js-------
+
+通过对应view页面
+  通过网络页面创建数据获得对应轮播图的数据，
+  加载vant的轮播组件，通过vantAPI获得安装并且写入相关配置，并且导入，这里推荐放在一个单独js文件里引用
+  common/plugin/vant.js
+  创建一个轮播的公共组件通过slot插槽的方式提供给对应的view使用
+  view组件只需要导入组件就可以代替替代插槽里内容就可以了
+填坑须知-----
+  vant推荐轮播的懒加载功能会导致 指示器显示数量不正确从而不显示。
+  UPDATE：更新了图片防抖动技术 在view/home中vsi-box中加入css图片防止抖动技术
+
+第六节课 推送信息组件搭建
+  建立一个推送组件，详情请看home组件下子组件RecommendView
+  利用弹性布局做到的一列4个进行布局
+  封装成home的子组件进行挂载
+  完成后同步仓库
+
+第七课  tab组件
+这里可以使用公共组件vant-ui进行开发
+在公共组件js里加载tab 
+使用这个组件，配合grid宫格一起使用，或可以自己写宫格
+这里面涉及到数据结构 goods:{
+              "news":{page:5,list:[150]},
+              "pop"：{page:2,list:[60]},
+              "sell":{page:1,list:[30]}
+          }
+根据每条数据显示30条数据，下拉会增加数组的长度，故会增加list的长度,
+根据页面拉升我们在宫图格中使用了绝对定位加弹性布局的方式进行商品成列的展示
+
+第八课   基于tab加载的相关功能实现
+
+使用使用vant组件的list进行tab列表的开发
+
+js小知识 tips:
+Object.keys(Obj)[0] 可获得对象中key对应String名称数组 随后可以通过遍历获得
+
+这里做的优化为利用vant list 插件进行scroll吸顶效果,以及利用是事件总成技术监听
+标签的切换,实施记录标签，来判断加载类型。
+
+后台请求数据加载，则是利用vant-list中的@load函数做的刷新，加入防抖可以大成度上避免多次加载
+
+返回按钮 设计利用添加事件自定义函数来监听滚动的这个操作，通过实时计算顶部高度来判断按钮的显示与否
+
+补上节课笔记：
+使用keep-alive进行保持窗口活跃，
+里面涉及了两个周期函数 activated，deactivated
+通过在deactivated,记录所在页面的scrollY轴坐标，
+再次返回activated时候给予这个坐标通过js原生方法进行定位 达到保存窗口位置的需求
+
+Detail开始********************
+第九课 详情页的开发 
+首先第一步创建个一个详情页的组件进行单页面操作，并且在router中配置路由 例如页面A=>B
+由于请求不同的窗口，所以这里使用了动态路由技术 
+三种方式：
+      第一种传参obj中用 name（路由配置中name进行路由标识） params作为参数进行传递
+        this.$router.push({this.$router.push({name: 'dispatch', params: {paicheNo: obj.paicheNo}})})
+        取数据：this.$route.params.paicheNo
+      第二种传参obj中用 path（路由配置path进行路由标识） query进行传值操作
+        this.$router.push({path: '/transport/dispatch', query: {paicheNo: obj.paicheNo}})
+        取数据：this.$route.query.paicheNo
+      第三种动态路由
+        router中配置 path:"dispatch:id"
+        this.$router.push('/dispatch/' +id )
+        取数据：this.$route.params.id
+选择第三种方式进行路由追踪，通过获得的id进行后台请求。
+
+nav部分进行 返回按钮开发完毕
+
+购物车数据整合 将数据的整合到一个对象中
+
+let good=new goods(a,b,c)  
+
+将后台接口中获得的数据进行抽取并整合到一个对象中进行传参显示
+
+轮播图完成 detail项目开始
+tab栏隐藏功能略。。。。 详情请见Detail组件上的方法
+建立baseGoodInfo组件用于参数展示
+制作信息也需要进行axios的调用获取数据，
+通过分割数据的 new对象的方式进行子组件的传参操作
+
+小Tips:
+由于使用push跳转路由的单页面操作，导致了滑动块同步位置的BUG，这里使用周期函数手动将页面回归至起始位置，详情请见./Detail组件中creat函数中的方法。
+提示：目前用的是假接口模拟的数据，正式接口请删除假接口模式，自行修改请求方法
+
+同步分支detail-goodsInfo
+
+第十一课开发商品规格栏： src:Detail.vue
+设计思路: 引入Vant ui 中的Suk商品规格组件进行开发
+
+设计过程:
+第一步:引入 vant组件进入vue框架（不做过多描述）
+
+第二步:直接在需求的页面上放置标签<van-sku/>,标签内的Props除了v-model其他全部清空（v-M是控制的规格弹窗是否开启）
+
+第三步:引入数据树 建立商品规格也是这个组件核心数据 suk这里建议放在计算属性中去展示也可以在data中但是会造成结构繁琐.
+
+第四步:打造suk树的，suk属性为suk的核心属性，它是由2大模块以及其他若干数据组成的 模块为tree和List,其他属性可以自己看他们备注比较简单，下面说下这个两个核心的模块
+
+tree:[] 数组包含所有的规格定义，有几个规格就写几个规格对象。所有的规格对象都有对应 key值和value值 
+    key值：规格的名字例如（颜色尺码），
+    value值：为对应的一些需要设置的属性（实战数据来自后端）数组结构为id,name（必选）imgUrl和previewImgUrl（可选项）
+    k_s:值对应你整个规格的队列,用于组合使用 s1 s2 s3 最多三个队列选择其一
+
+List:[] 用于规格队列的组合 颜色——>尺码 等于一件完整的商品,这个数组就是展示这个组合属性的
+    id: 1600, // skuId，下单时后端需要  这是请求后端是的一个组合名称 例如170+L码的衣服,请求后台的时候id就为1600 这个数据可以根据后台数据库指定
+
+    price: 432000, // 价格（单位分） 不多说后端获取
+
+    s1: '1000', // 规格类目 k_s 为 s1 的对应规格值 id 这个就是对应tree数组上设置的value里的id了,举例这里是颜色
+
+    s2: '1100', // 规格类目 k_s 为 s2 的对应规格值 id 同上这里是尺码 每个tree都得写对应的id和规格队列，否则数据无效
+
+    s3: '0', // 最多包含3个规格值，为0表示不存在该规格
+    stock_num: 322 // 当前 sku 组合对应的库存
+
+其他属性不做过多描述
+    price: '0', // 默认价格（单位元）
+    stock_num: 600, // 商品总库存
+    collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+    none_sku: false // 是否无规格商品
+-------------suk属性结束------------------------
+其他标签props
+goods  
+     // 默认商品 sku 缩略图
+      picture:www.xxxxx.jpg 默认商品的缩放图
+goods-id
+      //必填id,这个属性一般页面跳转时会给到这个属性，用于后端传输
+
+以上 suk goods goods-id 为其中基本使用属性，后续的留言功能还未研究，需要的可以去官网api自己研究下
+
+
+
+点击弹窗建立略.....
+
+店铺页面组件 没啥说的 传参 调整css样式
+
+详情组件 一样图片框使用懒加载进行实施
+
+评论组件：建设略
+这里有个重点就是时间戳的产生 ，后台返回creatd-time 为一组数字，需要通过计算得到对应的时间戳
+
+  1.时间戳转换为Data 详情请见common/utils/utils方法中的 正则表达式 获取从后台转换过来的时间
+
+  2.过滤器的使用filters 为了转换某些数据比如150000——>15.0万中使用
+
+  3.一些css样式可以直接对照代码学习不做过多详述
+  
+  4.同页面跳转问题，同页面做路由跳转时需要在router-view做key值的绑定进行页面刷新
+    <keep-alive exclude="Detail">
+      <router-view :key="$route.fullPath" />
+    </keep-alive>
+  否则的会造成页面无法刷新
+
+
+ 用到的知识点:通过$bus 事件总线类似vuex的功能进行解决，当每一张宫格图加载完毕时,会触发一次这个方法,到这个全局事件中，然后在home的组件中同时响应这个方法也进行函数的回调，从而进行scroll.refresh()操作
+      bus->总线
+    Vue.prototype.$bus=new Vue()
+    this.$bus.$emit(事件)
+    this.$bus.$on(事件,回调函数)
+
+第十课：功能优化
+    用到的知识点:通过$bus 事件总线类似vuex的功能进行解决，当每一张宫格图加载完毕时,会触发一次这个方法,到这个全局事件中，然后在home的组件中同时响应这个方法也进行函数的回调，从而进行scroll.refresh()操作
+          bus->总线
+    //主函数进行bus原型的注册
+    Vue.prototype.$bus=new Vue()
+    //在某个组件发出事件响应
+    this.$bus.$emit(事件)
+    //在需要响应的组件中收到收到响应并且回调
+    this.$bus.$on(事件,回调函数)
+    //取消对应响应回调函数,必须要是原回调函数
+    this.$bus.$off(事件,回调函数)
+
+
+
+  通过上节课我们知道解决bscroll滑动问题的方案就是 在图片加载完毕后进行bscroll对象的刷新
+  但是由于后续我们会进行更多的加载，我们不得不进行重复无效加载的优化，这时候原生函数的js防抖功能成为了
+  我们的解决方案：
+  具体实施是:
+function debounce(func, wait) {(需要优化重复执行的函数,合并执行的时间)
+    let timer//给出一个优化执行线程的变量
+    return function() {
+        let context = this // 注意 this 指向
+        let args = arguments // arguments中存着e
+
+        if (timer) clearTimeout(timer)//如果上个timer未执行后,这个线程会被函数给清除
+
+        timer = setTimeout(() => {//延时函数执行通过apply更改this指向
+            func.apply(context, args)
+        }, wait)
+    }
+}
+  总结函数优化效果：当一个请求发送时，我们会将这个线程请求挂起一段时间，如果有新请求在这段挂起时间内
+
+  vue知识点补充
+  vue.mixin 补充
+  可以混入任何的的vue任何的属性，作为补充例如 data methods 一些周期函数：mouted() created()
+
+
+  推荐学习futter(Dark) 有空就学习
+
+  第14课 标题和内容的联动效果
+  * 在detail中监听标题的点击，获取index
+  * 滚动到对应的主题
+    **获取所有主题的的offsetTop值
+    **在哪里获取正确的offsetTop
+      1.creted里肯定不行组件未加载
+      2.图片加载完毕才是最正确的高度
+
+    Vue.nextTick( [callback, context] )
+      参数：
+
+      {Function} [callback]
+      {Object} [context]
+      用法：
+
+      在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+
+      // 修改数据
+      vm.msg = 'Hello'
+      // DOM 还没有更新
+      Vue.nextTick(function () {
+        // DOM 更新了
+      })
+    得到主题距离顶部的实际高度最佳方案是，图片加载事件完毕后进行调用
+
+    //goodlist图片加载回调函数
+    this.$bus.$on('goodsImgOnload', this.getThemeTopY)
+    //imgInfo图文参数加载回调函数
+    this.$bus.$on('imgInfoOnload', this.getThemeTopY)
+
+    标签移动之前已经讲过，当前实现方法是由空间换区时间的方式进行判断并且赋值
+    经过区域的计算得到固定高度，进行区域判断 在最后的区域给出一个max的最大值
+    进行区域判断
+      for (var i = 0; i < this.themeTopY.length - 1; i++) {
+        if (
+          this.currentIndex !== i &&
+          top + 50 >= this.themeTopY[i] &&
+          top - 50 <= this.themeTopY[i + 1]
+        ) {
+          this.currentIndex = i
+          this.$refs.tab.currentIndex = i
+        }
+      }
+
+
+    Detail详情页完**********************
+
+  Cart篇*********************
+  整体框架结构依托于自行处理
+  回到 Detail.vue处理购物车加入的数据生成，利用VUEX 进行跨页面储存
+  具体实施请看加入购物车按钮的函数体现
+  vuex的知识可以查看之前vuex的教学定义
+  vuex的目录结构
+  state——>state.js
+  mutations——>mutations.js
+  actions——>actions.js
+  函数名替换
+  上述对应_type进行替换
+
+  router-link位置重置
+  关于购物车router出去的一个异常，就是点后屏幕的滚动位置会保留，这里我们在router文件夹
+  下建立个scrollRule规则js俩控制需要重置位置的页面路径
+
+  cart页面节后
+  HTML
+  从上至下：
+  nav-bar——>封装组件样式使用了可隐藏下拉可见的函数
+  van-button（确认删除）——>通过点击titleBar和navBar的管理产生的函数
+  van-list——>商品的购物车内的展示功能,里面包括空的占位符
+  van-submit-bar——>结算栏
+  js
+  可以看cart里面的方法所有介绍，有很多都是vant插件API
+  vuex相关知识，可以查看官方文档或者查看对应方法理解
+  css
+  主要使用的技术还是弹性布局和定位来实现
+  
+
+  
+
+
+
+    
+    
+
+  
+
+
+
+
+  
