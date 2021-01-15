@@ -24,6 +24,13 @@ export const constantRoutes = [{
         hidden: true
     },
     {
+        path: '/room/:id',
+        component: () =>
+            import ('@/views/pub/room'),
+        name: 'ChatRoom',
+        hidden: true
+    },
+    {
         path: '/home',
         component: layout,
         redirect: '/home/index',
@@ -47,80 +54,33 @@ export const constantRoutes = [{
             name: 'Home',
             meta: { title: '动画', icon: 'animation' }
         }]
-    },
-    {
-        path: '/12',
-        component: layout,
-        redirect: '/12/index',
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/animation/index'),
-            name: 'Home',
-            meta: { title: '动画', icon: 'animation' }
-        }]
-    },
-    {
-        path: '/13',
-        component: layout,
-        redirect: '/13/index',
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/animation/index'),
-            name: 'Home',
-            meta: { title: '动画', icon: 'animation' }
-        }]
-    },
-    {
-        path: '/14',
-        component: layout,
-        redirect: '/14/index',
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/animation/index'),
-            name: 'Home',
-            meta: { title: '动画', icon: 'animation' }
-        }]
-    },
-    {
-        path: '/15',
-        component: layout,
-        redirect: '/15/index',
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/animation/index'),
-            name: 'Home',
-            meta: { title: '动画', icon: 'animation' }
-        }]
-    },
-    {
-        path: '/16',
-        component: layout,
-        redirect: '/16/index',
-        children: [{
-            path: 'index',
-            component: () =>
-                import ('@/views/animation/index'),
-            name: 'Home',
-            meta: { title: '动画', icon: 'animation' }
-        }]
     }
 ]
 export const asyncRoutes = [{
-    path: '/otomads',
-    component: layout,
-    redirect: '/otomads/index',
-    children: [{
-        path: 'index',
-        component: () =>
-            import ('@/views/otomads/index'),
-        name: 'Otomads',
-        meta: { title: '鬼畜', icon: 'otomads' }
-    }]
-}]
+        path: '/otomads',
+        component: layout,
+        redirect: '/otomads/index',
+        children: [{
+            path: 'index',
+            component: () =>
+                import ('@/views/otomads/index'),
+            name: 'Otomads',
+            meta: { title: '鬼畜', icon: 'otomads' }
+        }]
+    },
+    {
+        path: '/chat',
+        component: layout,
+        redirect: '/chat/index',
+        children: [{
+            path: 'index',
+            component: () =>
+                import ('@/views/chat/index'),
+            name: 'Chat',
+            meta: { title: '聊天室', icon: 'chat' }
+        }]
+    }
+]
 
 const createRouter = () =>
     new Router({

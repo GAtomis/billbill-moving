@@ -48,7 +48,7 @@ export default {
         return 0
       }
     },
-    value: Object
+    value: Array
   },
   data() {
     return {

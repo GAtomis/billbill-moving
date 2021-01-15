@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router/index'
 import store from './store/index'
 import fastClick from 'fastclick'
+import SvgIcon from '@/components/common/SvgIcon/index.js'
+
+import '@/styles/index.scss' // global css
 
 import '@/components/common/mint-ui/index'
 //小b站主题样式覆盖
@@ -14,6 +17,7 @@ import './permission'
 //svg加载器
 import '@/assets/icons'
 
+Vue.use(SvgIcon)
 fastClick.attach(document.body)
 
 Vue.config.productionTip = false

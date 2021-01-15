@@ -1,28 +1,5 @@
 <template>
-  <div>
-    <div class="risk-tab-top">
-      <div
-        class="risk-tab-cont"
-        @click="tabChange(index)"
-        v-for="(item, index) in tabList"
-        :class="[activeIndex == index ? 'risk-active' : '']"
-        :key="index"
-      >
-        {{ item }}
-      </div>
-      <div
-        class="risk-active-line"
-        :class="[
-          activeIndex == 0 ? 'risk-active-line-f' : 'risk-active-line-r'
-        ]"
-      ></div>
-    </div>
-    <ul class="risk-cont">
-      <li v-show="activeIndex == 0">111111111111</li>
-      <li v-show="activeIndex == 1">22222222222222</li>
-      <li v-show="activeIndex == 3">33333333333333</li>
-    </ul>
-  </div>
+  <div></div>
 </template>
 
 <script>
@@ -32,11 +9,7 @@ export default {
   mixins: [],
   props: {},
   data() {
-    return {
-      tabList: ['就近搜索', '指定搜索', '纠结', '彷徨'],
-      contList: ['11111111', '2222222222', '33333333'],
-      activeIndex: 0
-    }
+    return {}
   },
   watch: {},
   computed: {},

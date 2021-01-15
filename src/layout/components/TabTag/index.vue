@@ -6,7 +6,7 @@
       </template>
     </mt-navbar> -->
     <tab-control :currentIndex="currentIndex" v-model="permission_routes">
-      <i />
+      
     </tab-control>
   </div>
 </template>

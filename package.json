@@ -18,7 +18,8 @@
         "vue": "^2.6.10",
         "vue-router": "^3.0.3",
         "vuex": "^3.0.1",
-        "vux": "^2.9.4"
+        "vux": "^2.9.4",
+        "websocket-heartbeat-js": "^1.0.11"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^3.12.0",

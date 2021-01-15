@@ -5,6 +5,11 @@ $color-primary: #fb7299;
     background-color: $color-primary;
 }
 
+.mint-wrap {
+    background-color: $color-primary;
+    color: #fff;
+}
+
 .mint-button:not(.is-disabled):active::after {
     opacity: 0.2;
     /* .6 */
